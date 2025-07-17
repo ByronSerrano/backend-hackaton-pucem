@@ -11,6 +11,6 @@ import { CategoriaMenu } from './entities/categoria_menu.entity';
   ],
   controllers: [MenusController],
   providers: [MenusService],
-  exports: [MenusService, TypeOrmModule.forFeature([Menu, CategoriaMenu])],
+  exports: [MenusService], // Exportamos el service para uso en otros módulos
 })
 export class MenusModule {}

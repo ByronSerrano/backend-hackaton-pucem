@@ -22,7 +22,7 @@ export class Plato {
   @Column({ type: 'text' })
   descripcion: string;
 
-  @ManyToOne(() => Menu, (menu) => menu.id, { nullable: true })
+  @ManyToOne(() => Menu, (menu) => menu.menuId, { nullable: true })
   menu: Menu | null;
 
   @ManyToMany(() => Insumo)
@@ -38,5 +38,4 @@ export class Plato {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
 }

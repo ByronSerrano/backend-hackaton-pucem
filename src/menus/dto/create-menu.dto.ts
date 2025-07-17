@@ -1,67 +1,41 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsBoolean,
-  IsOptional,
-  Length,
-  IsUrl,
-  IsNumber,
-  IsPositive,
-} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateMenuDto {
   @ApiProperty({
     description: 'Nombre del menú',
-    example: 'Menú Ejecutivo',
-    maxLength: 100,
+    example: 'Menú Ejecutivo'
   })
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 100)
   nombre: string;
 
-  @ApiProperty({
-    description: 'Descripción del menú',
-    example: 'Menú completo para el almuerzo ejecutivo',
-  })
-  @IsString()
-  @IsNotEmpty()
-  descripcion: string;
-
   @ApiPropertyOptional({
-    description: 'Indica si tiene precio unitario',
-    example: true,
-    default: true,
+    description: 'Descripción del menú',
+    example: 'Menú completo para el almuerzo ejecutivo'
   })
-  @IsOptional()
-  @IsBoolean()
-  precioUnitario?: boolean;
+  descripcion?: string;
 
   @ApiProperty({
-    description: 'URL de la imagen del menú',
-    example: 'https://example.com/image.jpg',
+    description: 'Precio unitario del menú en dólares',
+    example: 25.50,
+    minimum: 0.01
   })
-  @IsString()
-  @IsNotEmpty()
-  @IsUrl()
-  imagenUrl: string;
+  precioUnitario: number;
 
   @ApiPropertyOptional({
     description: 'ID de la categoría del menú',
-    example: 1,
+    example: 1
   })
-  @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  categoriaMenuId?: number;
+  categoriaId?: number;
 
   @ApiPropertyOptional({
-    description: 'Estado del menú (activo/inactivo)',
+    description: 'Estado del menú (disponible/no disponible)',
     example: true,
-    default: true,
+    default: true
   })
-  @IsOptional()
-  @IsBoolean()
   estado?: boolean;
+
+  @ApiPropertyOptional({
+    description: 'URL de la imagen del menú',
+    example: 'https://example.com/menu.jpg'
+  })
+  imagenUrl?: string;
 }
