@@ -9,9 +9,9 @@ API REST desarrollada con NestJS para la gestión integral de servicios de cater
 ## 👥 Equipo de Desarrollo
 
 - **Byron Serrano** - Desarrollador Backend
-- **Luis Velazco** - Desarrollador Backend
-- **Stiven Guanoquiza** - Desarrollador Backend  
 - **Xavier Navia** - Desarrollador Backend
+- **Luis Velazco** - Desarrollador Frontend
+- **Stiven Guanoquiza** - Desarrollador Frontend  
 
 ---
 
