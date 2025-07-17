@@ -9,12 +9,6 @@ services:
       - /app/node_modules
     environment:
       NODE_ENV: development
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: hackaton_db
-      DEVELOPMENT: true
     networks:
       - app-network
     depends_on:
