@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataBaseConfig } from './config/database.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientesModule } from './clientes/clientes.module';
+import { PlatosModule } from './platos/platos.module';
+import { MenusModule } from './menus/menus.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { ClientesModule } from './clientes/clientes.module';
       inject: [ConfigService],
     }),
     ClientesModule,
+    PlatosModule,
+    MenusModule,
   ],
   controllers: [AppController],
   providers: [AppService],
