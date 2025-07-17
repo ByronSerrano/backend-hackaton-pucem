@@ -5,6 +5,8 @@ import { Pedido } from './entities/pedido.entity';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
 import { ClientesService } from '../clientes/clientes.service';
+import { MenusService } from '../menus/menus.service';
+import { Menu } from '../menus/entities/menu.entity';
 
 @Injectable()
 export class PedidosService {
@@ -12,6 +14,7 @@ export class PedidosService {
     @InjectRepository(Pedido)
     private readonly pedidoRepository: Repository<Pedido>,
     private readonly clientesService: ClientesService,
+    private readonly menusService: MenusService,
   ) {}
 
   /**
@@ -21,6 +24,9 @@ export class PedidosService {
     try {
       // Validar que el cliente existe
       await this.clientesService.findOne(createPedidoDto.clienteId);
+
+      // Validar que el menú existe y obtener el precio
+      const menu = await this.menusService.findOne(createPedidoDto.menuId);
 
       // Validar fecha del evento (no puede ser en el pasado)
       const fechaEvento = new Date(createPedidoDto.eventDate);
@@ -41,12 +47,8 @@ export class PedidosService {
         throw new BadRequestException('El número de personas debe ser mayor a 0');
       }
 
-      // TODO: Validar que el menú existe y calcular total
-      // const menu = await this.menusService.findOne(createPedidoDto.menuId);
-      // const totalPedido = menu.precioUnitario * createPedidoDto.cantidadMenus;
-
-      // Por ahora, calcular un total temporal
-      const totalPedido = createPedidoDto.cantidadMenus * 50; // $50 por menú temporal
+      // Calcular total basado en el precio del menú
+      const totalPedido = menu.precioUnitario * createPedidoDto.cantidadMenus;
 
       // Crear nueva instancia
       const pedido = this.pedidoRepository.create({
@@ -173,6 +175,12 @@ export class PedidosService {
       await this.clientesService.findOne(updatePedidoDto.clienteId);
     }
 
+    // Validar menú si se está actualizando y obtener el menú para cálculo
+    let menuParaCalculo: Menu | undefined = undefined; // ← CORREGIDO: tipo correcto
+    if (updatePedidoDto.menuId) {
+      menuParaCalculo = await this.menusService.findOne(updatePedidoDto.menuId);
+    }
+
     // Validar fecha del evento si se está actualizando
     if (updatePedidoDto.eventDate) {
       const fechaEvento = new Date(updatePedidoDto.eventDate);
@@ -194,10 +202,13 @@ export class PedidosService {
     }
 
     try {
-      // Recalcular total si cambia la cantidad de menús
-      if (updatePedidoDto.cantidadMenus) {
-        // TODO: Obtener precio real del menú
-        updatePedidoDto['totalPedido'] = updatePedidoDto.cantidadMenus * 50;
+      // Recalcular total si cambia la cantidad de menús o el menú
+      if (updatePedidoDto.cantidadMenus || updatePedidoDto.menuId) {
+        if (!menuParaCalculo) { // ← CORREGIDO: verificación de undefined
+          menuParaCalculo = await this.menusService.findOne(pedido.menuId);
+        }
+        const cantidadMenus = updatePedidoDto.cantidadMenus || pedido.cantidadMenus;
+        updatePedidoDto['totalPedido'] = menuParaCalculo.precioUnitario * cantidadMenus; // ← CORREGIDO: ya no es null
       }
 
       // Actualizar campos

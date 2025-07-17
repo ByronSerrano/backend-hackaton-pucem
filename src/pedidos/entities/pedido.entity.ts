@@ -141,17 +141,8 @@ export class Pedido {
   @JoinColumn({ name: 'cliente_id' })
   cliente: Cliente;
 
-  // NO definimos la relación con Entrega aquí para evitar dependencia circular
-  // La relación se maneja desde el lado de Entrega (OneToOne)
-  // Si necesitas obtener la entrega de un pedido, usa EntregasService.findByPedidoId(pedidoId)
-
-  // Nota: Menu entity se creará después
-  // @ManyToOne(() => Menu, { eager: true })
-  // @JoinColumn({ name: 'menu_id' })
-  // menu: Menu;
-
-  // @OneToMany(() => Pago, pago => pago.pedido)
-  // pagos: Pago[];
+  // NO incluimos relación con Menu para evitar dependencia circular
+  // La información del menú se puede obtener usando MenusService.findOne(menuId)
 
   // Propiedades virtuales
   @ApiProperty({

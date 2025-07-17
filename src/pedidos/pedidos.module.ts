@@ -4,11 +4,13 @@ import { PedidosService } from './pedidos.service';
 import { PedidosController } from './pedidos.controller';
 import { Pedido } from './entities/pedido.entity';
 import { ClientesModule } from '../clientes/clientes.module';
+import { MenusModule } from '../menus/menus.module'; // ← Agregar esta importación
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Pedido]),
-    ClientesModule, // Importamos para validar clientes
+    ClientesModule, // Para validar clientes
+    MenusModule,    // ← Para validar menús y calcular precios
   ],
   controllers: [PedidosController],
   providers: [PedidosService],

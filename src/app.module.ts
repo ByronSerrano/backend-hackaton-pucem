@@ -5,8 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataBaseConfig } from './config/database.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientesModule } from './clientes/clientes.module';
+import { MenusModule } from './menus/menus.module';
 import { PedidosModule } from './pedidos/pedidos.module';
-import { EntregaModule } from './entregas/entrega.module';
+import { EntregaModule } from './entregas/entrega.module'; // Corregido: EntregasModule
 import { PagosModule } from './pagos/pagos.module';
 
 @Module({
@@ -23,9 +24,10 @@ import { PagosModule } from './pagos/pagos.module';
       inject: [ConfigService],
     }),
     ClientesModule,
-    PedidosModule,
-    EntregaModule,
-    PagosModule, // ← Agregado el módulo de Entregas
+    MenusModule,     // ← Agregado
+    PedidosModule,   // ← Agregado  
+    EntregaModule,  // ← Agregado (corregido nombre)
+    PagosModule,     // ← Agregado
   ],
   controllers: [AppController],
   providers: [AppService],
