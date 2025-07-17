@@ -12,6 +12,6 @@ import { Insumo } from './entities/insumo.entity';
     ],
   controllers: [PlatosController],
   providers: [PlatosService],
-  exports: [PlatosService],
+  exports: [PlatosService, TypeOrmModule.forFeature([Plato, Insumo])],
 })
 export class PlatosModule {}

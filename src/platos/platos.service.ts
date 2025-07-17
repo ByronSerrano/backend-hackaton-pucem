@@ -6,11 +6,11 @@ import { Insumo } from './entities/insumo.entity';
 import { In, Repository } from 'typeorm';
 import { CreateInsumoDto } from './dto/create-insumo.dto';
 import { Plato } from './entities/plato.entity';
+import { Menu } from '../menus/entities/menu.entity';
 
 @Injectable()
 export class PlatosService {
   private readonly logger = new Logger(PlatosService.name);
-  menuRepository: any;
   
   constructor(
     @InjectRepository(Insumo)
@@ -18,6 +18,9 @@ export class PlatosService {
 
     @InjectRepository(Plato)
     private platoRepository: Repository<Plato>,
+
+    @InjectRepository(Menu)
+    private menuRepository: Repository<Menu>,
   ) {}
 
   async create(createPlatoDto: CreatePlatoDto) {
@@ -30,7 +33,7 @@ export class PlatosService {
       // Si se proporciona menuId, buscar y asignar el menu
       if (createPlatoDto.menuId) {
         const menu = await this.menuRepository.findOne({ 
-          where: { id: createPlatoDto.menuId } 
+          where: { menuId: createPlatoDto.menuId } 
         });
         if (!menu) {
           throw new NotFoundException(`Menu with ID ${createPlatoDto.menuId} not found`);
@@ -79,6 +82,18 @@ export class PlatosService {
       })
       .catch(error => {
         this.logger.error('Error finding platos', error);
+        throw error;
+      });
+  }
+
+  findAllInsumos() {
+    return this.insumoRepository.find()
+      .then(insumos => {
+        this.logger.log(`Found ${insumos.length} insumos`);
+        return insumos;
+      })
+      .catch(error => {
+        this.logger.error('Error finding insumos', error);
         throw error;
       });
   }

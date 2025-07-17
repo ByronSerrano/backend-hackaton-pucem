@@ -9,6 +9,7 @@ import { MenusModule } from './menus/menus.module';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { EntregaModule } from './entregas/entrega.module'; // Corregido: EntregasModule
 import { PagosModule } from './pagos/pagos.module';
+import { PlatosModule } from './platos/platos.module';
 
 @Module({
   imports: [
@@ -24,10 +25,11 @@ import { PagosModule } from './pagos/pagos.module';
       inject: [ConfigService],
     }),
     ClientesModule,
-    MenusModule,     // ← Agregado
-    PedidosModule,   // ← Agregado  
-    EntregaModule,  // ← Agregado (corregido nombre)
-    PagosModule,     // ← Agregado
+    MenusModule,
+    PedidosModule,
+    EntregaModule,
+    PagosModule,
+    PlatosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
