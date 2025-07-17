@@ -5,6 +5,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { CategoriaMenu } from './categoria_menu.entity';
 
@@ -25,8 +27,9 @@ export class Menu {
   @Column({ type: 'text' })
   imagenUrl: string;
 
-  @OneToOne(() => CategoriaMenu, (categoriaMenu) => categoriaMenu.id)
-  categoriaMenu: CategoriaMenu;
+  @OneToOne(() => CategoriaMenu, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'categoriaMenuId' })
+  categoriaMenu: CategoriaMenu | null;
 
   @Column({ type: 'boolean', default: true })
   estado: boolean;
